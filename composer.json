@@ -1,0 +1,19 @@
+{
+  "name": "wirecard/learning-shop",
+  "description": "Shop for learning the SDK",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Flavius Aspra",
+      "email": "flavius.aspra@wirecard.com"
+    }
+  ],
+  "require": {
+    "php-http/guzzle6-adapter": "v2.0.1",
+    "wirecard/payment-sdk-php": "3.8.0"
+  },
+  "require-dev": {
+    "codeception/codeception": "3.0.3"
+  }
+}
