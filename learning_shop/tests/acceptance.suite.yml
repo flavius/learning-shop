@@ -1,0 +1,21 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: 'http://fa25b0a3.ngrok.io/'
+            browser: chrome
+            window_size: 1024x768
+            capabilities:
+              chromeOptions:
+                args: ["start-maximized", "disable-infobars", "--headless", "--disable-gpu", "--disable-extensions", "--disable-dev-shm-usage", "--no-sandbox", "--lang=en"]
+        - \App\Tests\Helper\Acceptance
+extensions:
+    enabled:
+        - Codeception\Extension\Recorder:
+            delete_successful: false # keep screenshots of successful tests
