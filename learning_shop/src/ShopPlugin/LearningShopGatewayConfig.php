@@ -5,6 +5,7 @@ use App\PaymentSDK\PaymentGateway;
 use App\PaymentSDK\PaymentGatewayConfig;
 
 use App\PaymentSDK\PaymentMethod\EpsConfig;
+use App\PaymentSDK\PaymentMethod\GiropayConfig;
 use App\PaymentSDK\PaymentMethodConfig;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -26,9 +27,8 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
     {
         $this->router = $router;
         $this->paymentMethodsConfigs = [
-            EpsConfig::class => function () {
-                return new LearningEpsConfig($this);
-            },
+            EpsConfig::class => function () { return new LearningEpsConfig($this); },
+            GiropayConfig::class => function () { return new LearningGiropayConfig($this); },
         ];
     }
 

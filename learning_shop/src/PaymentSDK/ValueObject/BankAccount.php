@@ -17,7 +17,7 @@ class BankAccount
      */
     public function __construct(string $iban, string $bic)
     {
-        if (strlen($iban) != 18) {
+        if (strlen($iban) != 18 && !$bic) {
             throw new \DomainException('Invalid bank account');
         }
         $this->value1 = $iban;
@@ -26,8 +26,12 @@ class BankAccount
 
     public function getLegacyBankAccount(): \Wirecard\PaymentSdk\Entity\BankAccount {
         $bankAccount = new \Wirecard\PaymentSdk\Entity\BankAccount();
-        $bankAccount->setIban($this->value1);
-        $bankAccount->setBic($this->value2);
+        if($this->value1) {
+            $bankAccount->setIban($this->value1);
+        }
+        if($this->value2) {
+            $bankAccount->setBic($this->value2);
+        }
         return $bankAccount;
     }
 }
