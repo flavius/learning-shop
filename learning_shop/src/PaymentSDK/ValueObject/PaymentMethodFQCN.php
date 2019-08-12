@@ -24,7 +24,7 @@ class PaymentMethodFQCN implements ValueObject
     public function __construct(string $name)
     {
         $name = $this->mapThroughConfigs($name);
-        $name = $this->mapThrowLegacy($name);
+        $name = $this->mapThroughLegacy($name);
         $validNames = [
             EpsTransaction::class,
         ];
@@ -45,7 +45,7 @@ class PaymentMethodFQCN implements ValueObject
         return $name;
     }
 
-    private function mapThrowLegacy(string $name): string
+    private function mapThroughLegacy(string $name): string
     {
         $legacyMap = array_flip($this->shortNames);
         if (isset($legacyMap[$name])) {
