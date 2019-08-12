@@ -1,12 +1,10 @@
 <?php
 
 
-namespace App\Model;
+namespace App\PaymentSDK;
 
 
 interface ValueObject
 {
-
     public function equals(ValueObject $other) : bool;
-
 }

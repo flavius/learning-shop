@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Model;
+namespace App\PaymentSDK;
 
-use Wirecard\PaymentSdk\Entity\Amount;
+use App\PaymentSDK\ValueObject\Amount;
 
 /**
  * Interface Valuable
- * @package App\Model
+ * @package App\PaymentSDK
  *
  * Something which has a value in terms of value.
  *
