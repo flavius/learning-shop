@@ -5,12 +5,10 @@ namespace App\Controller;
 
 
 use App\Infrastructure\AbstractController;
-use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use App\ShopPlugin\LearningShopGatewayConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Wirecard\PaymentSdk\Mapper\ResponseMapper;
 
 class Notification extends AbstractController
 {
