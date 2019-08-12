@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Valuable;
+namespace App\PaymentSDK\Valuable;
 
 
 use App\PaymentSDK\Valuable;
