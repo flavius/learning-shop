@@ -46,6 +46,7 @@ class LearningEpsConfig implements EpsConfig
 
     public function getSuccessUrl()
     {
+        //
         return $this->config->getSuccessUrl();
     }
 

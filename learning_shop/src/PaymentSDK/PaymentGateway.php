@@ -4,6 +4,7 @@
 namespace App\PaymentSDK;
 
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
+use Wirecard\PaymentSdk\Mapper\ResponseMapper;
 use Wirecard\PaymentSdk\Response\Response;
 use Wirecard\PaymentSdk\TransactionService;
 
@@ -34,6 +35,15 @@ class PaymentGateway
         }
         $transactionService = new TransactionService($config);
         $response = $transactionService->pay($transaction);
+        return $response;
+    }
+
+    public function decodeResponse($eppresponse, PaymentMethodFQCN $methodName)
+    {
+        $paymentMethodConfig = $this->config->getPaymentMethodConfig($methodName);
+        $config = $this->config->getLegacyConfig($paymentMethodConfig);
+        $mapper = new ResponseMapper($config);
+        $response = $mapper->map($eppresponse);
         return $response;
     }
 }

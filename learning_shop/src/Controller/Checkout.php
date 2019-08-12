@@ -7,11 +7,11 @@ namespace App\Controller;
 use App\Infrastructure\AbstractController;
 
 use App\PaymentSDK\PaymentMethod\EpsTransaction;
+use App\PaymentSDK\Valuable\UnnamedValuable;
 use App\PaymentSDK\ValueObject\Amount;
 use App\PaymentSDK\ValueObject\Currency;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use App\ShopPlugin\LearningShopGatewayConfig;
-use App\Valuable\UnnamedValuable;
 use Symfony\Component\Routing\Annotation\Route;
 use Wirecard\PaymentSdk\Response\InteractionResponse;
 

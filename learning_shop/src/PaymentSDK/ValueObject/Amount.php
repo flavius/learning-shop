@@ -5,7 +5,6 @@ namespace App\PaymentSDK\ValueObject;
 
 
 use App\PaymentSDK\ValueObject;
-use App\Valuable\NumericValueObject;
 use Wirecard\PaymentSdk\Entity\Amount as LegacyAmount;
 
 class Amount implements ValueObject, NumericValueObject

@@ -82,7 +82,7 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
         $maid = $paymentMethodConfig->getMaid()->asString();
         $secret = $paymentMethodConfig->getGatewaySecret()->asString();
 
-        $legacyMethodConfig = new \Wirecard\PaymentSdk\Config\PaymentMethodConfig(\Wirecard\PaymentSdk\Transaction\EpsTransaction::NAME, $maid, $secret);
+        $legacyMethodConfig = new \Wirecard\PaymentSdk\Config\PaymentMethodConfig($paymentMethodConfig->getAbbreviation(), $maid, $secret);
         $config->add($legacyMethodConfig);
         return $config;
     }

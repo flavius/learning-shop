@@ -20,13 +20,14 @@ class EpsTransaction implements PaymentMethod
         $this->config = $config;
     }
 
-    public function newLegacyTransaction(): \Wirecard\PaymentSdk\Transaction\Transaction {
+    public function newLegacyTransaction(): \Wirecard\PaymentSdk\Transaction\Transaction
+    {
         $transaction = new \Wirecard\PaymentSdk\Transaction\EpsTransaction();
         $redirect = new Redirect(
-            $this->config->getSuccessUrl(),
-            $this->config->getCancelUrl(),
-            $this->config->getFailureUrl(),
-        );
+            $this->getSuccessUrl(),
+            $this->getCancelUrl(),
+            $this->getFailureUrl(),
+            );
         $transaction->setRedirect($redirect);
         $bankAccount = $this->config->getBankAccount()->getLegacyBankAccount();
         $transaction->setBankAccount($bankAccount);
@@ -36,7 +37,10 @@ class EpsTransaction implements PaymentMethod
 
     public function getSuccessUrl()
     {
-        return $this->config->getSuccessUrl();
+        $url = $this->config->getSuccessUrl();
+        $name = $this->config->getAbbreviation();
+        $url .= '?name=' . $name;//TODO: generating http-specific parameters here is not clean, as every shop might be different
+        return $url;
     }
 
     public function getCancelUrl()

@@ -3,20 +3,8 @@
 
 namespace App\Infrastructure;
 
-
-use App\Model\HasBankAccount;
-use App\Model\HasRedirect;
-use App\Model\PaymentGateway;
-use App\Model\PaymentGatewayConfig;
-use App\Model\PaymentMethod;
-use App\ShopPlugin\LearningShopConfig;
+use App\PaymentSDK\PaymentGatewayConfig;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
-use Wirecard\PaymentSdk\Config;
-use Wirecard\PaymentSdk\Config\PaymentMethodConfig;
-use Wirecard\PaymentSdk\Entity\Redirect;
-use Wirecard\PaymentSdk\Transaction\EpsTransaction;
-use Wirecard\PaymentSdk\Transaction\Transaction;
 
 class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 {
@@ -38,6 +26,5 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
         $this->get('router')->getContext()->setHost($_SERVER['HTTP_HOST']);
         return parent::generateUrl($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
-
 
 }
