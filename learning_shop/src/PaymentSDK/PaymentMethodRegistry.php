@@ -7,6 +7,7 @@ namespace App\PaymentSDK;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use Wirecard\PaymentSdk\Transaction\EpsTransaction as LegacyEpsTransaction;
 use Wirecard\PaymentSdk\Transaction\GiropayTransaction as LegacyGiropayTransaction;
+use Wirecard\PaymentSdk\Transaction\IdealTransaction as LegacyIdealTransaction;
 
 class PaymentMethodRegistry
 {
@@ -18,6 +19,7 @@ class PaymentMethodRegistry
     private $codes = [
         LegacyEpsTransaction::NAME,
         LegacyGiropayTransaction::NAME,
+        LegacyIdealTransaction::NAME,
     ];
 
     /**

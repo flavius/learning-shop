@@ -8,6 +8,8 @@ use App\PaymentSDK\PaymentMethod\EpsConfig;
 use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\PaymentMethod\GiropayConfig;
 use App\PaymentSDK\PaymentMethod\GiropayTransaction;
+use App\PaymentSDK\PaymentMethod\IdealConfig;
+use App\PaymentSDK\PaymentMethod\IdealTransaction;
 use App\PaymentSDK\ValueObject;
 
 class PaymentMethodFQCN implements ValueObject
@@ -22,6 +24,7 @@ class PaymentMethodFQCN implements ValueObject
     private $shortNames = [
         EpsTransaction::class => \Wirecard\PaymentSdk\Transaction\EpsTransaction::NAME,
         GiropayTransaction::class => \Wirecard\PaymentSdk\Transaction\GiropayTransaction::NAME,
+        IdealTransaction::class => \Wirecard\PaymentSdk\Transaction\IdealTransaction::NAME,
     ];
 
     public function __construct(string $name)
@@ -31,6 +34,7 @@ class PaymentMethodFQCN implements ValueObject
         $validNames = [
             EpsTransaction::class,
             GiropayTransaction::class,
+            IdealTransaction::class,
         ];
         if (!in_array($name, $validNames)) {
             throw new \DomainException('Invalid paymend method FQCN: ' . $name);
@@ -43,6 +47,7 @@ class PaymentMethodFQCN implements ValueObject
         $configMaps = [
             EpsConfig::class => EpsTransaction::class,
             GiropayConfig::class => GiropayTransaction::class,
+            IdealConfig::class => IdealTransaction::class,
         ];
         if (isset($configMaps[$name])) {
             return $configMaps[$name];

@@ -8,6 +8,7 @@ use App\Infrastructure\AbstractController;
 
 use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\PaymentMethodRegistry;
+use App\PaymentSDK\RequestEnvironment;
 use App\PaymentSDK\Valuable\NamedValuable;
 use App\PaymentSDK\Valuable\UnnamedValuable;
 use App\PaymentSDK\ValueObject\Amount;

@@ -38,12 +38,10 @@ class PaymentGateway
         return $response;
     }
 
-    public function decodeResponse($eppresponse, PaymentMethodFQCN $methodName)
+    public function decodeResponse(RequestEnvironment $environment)
     {
-        $paymentMethodConfig = $this->config->getPaymentMethodConfig($methodName);
-        $config = $this->config->getLegacyConfig($paymentMethodConfig);
-        $mapper = new ResponseMapper($config);
-        $response = $mapper->map($eppresponse);
-        return $response;
+        $decoderFactory = new ResponseDecoderFactory($environment, $this->config);
+        $decoder = $decoderFactory->getDecoder();
+        return $decoder->getLegacyResponse();
     }
 }

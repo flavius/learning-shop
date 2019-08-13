@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Infrastructure\AbstractController;
+use App\PaymentSDK\RequestEnvironment;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use App\ShopPlugin\LearningShopGatewayConfig;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +19,10 @@ class Notification extends AbstractController
     public function success(Request $request)
     {
         //POST: eppresponse, locale, psp_name="elastic-payments"
-        $eppresponse = $request->get('eppresponse');
-        $name = $request->query->get('name');
-        $paymentMethod = new PaymentMethodFQCN($name);
-
+        $environment = new RequestEnvironment($request->query->all(), $request->request->all(), $request->server->all());
         $config = new LearningShopGatewayConfig($this->get('router'));
         $gateway = $config->newGateway();
-        $response = $gateway->decodeResponse($eppresponse, $paymentMethod);
+        $response = $gateway->decodeResponse($environment);
 
         $details = $response->getTransactionDetails()->getAsHtml(['table_id' => 'transaction_details']);
         return $this->render('index/transaction_details.html.twig', ['transaction_details' => $details]);
