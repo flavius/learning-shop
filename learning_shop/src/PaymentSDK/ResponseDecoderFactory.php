@@ -31,7 +31,9 @@ class ResponseDecoderFactory
     {
         if ($this->environment->hasQueryParameter('name')) {
             try {
-                $method = new PaymentMethodFQCN($this->environment->getQueryParameter('name'));
+                $registry = $this->gatewayConfig->getPaymentMethodsRegistry();
+                $method = new PaymentMethodFQCN($this->environment->getQueryParameter('name'), $registry);
+                $getXmlResponse = function() {};
                 switch ($method->getShortName()) {//TODO: use the payment method registry
                     case 'eps':
                     case 'giropay':
@@ -40,15 +42,18 @@ class ResponseDecoderFactory
                         return $this->getIdealResponse();
                 }
             } catch (\Exception $e) {
+                error_log(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage());
                 return new EmptyDecoder();
             }
         }
+        error_log(__METHOD__ . ' ' . __LINE__);
         return new EmptyDecoder();
     }
 
     private function getXmlResponse(PaymentMethodFQCN $methodFQCN)
     {
         if (!$this->environment->hasQueryParameter('eppresponse')) {
+            error_log(__METHOD__ . ' ' . __LINE__);
             return new EmptyDecoder();
         }
         $config = $this->gatewayConfig->getPaymentMethodConfig($methodFQCN);

@@ -8,7 +8,7 @@ use App\PaymentSDK\PaymentMethod\EpsConfig;
 use App\PaymentSDK\PaymentMethod\GiropayConfig;
 use App\PaymentSDK\PaymentMethod\IdealConfig;
 use App\PaymentSDK\PaymentMethodConfig;
-use App\PaymentSDK\RequestEnvironment;
+use App\PaymentSDK\PaymentMethodRegistry;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,18 +21,23 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
      */
     private $router;
 
-    private $paymentMethodsConfigs = [];
+    private $paymentMethodRegistry;
 
-    private $paymentConfigs = [];
-
+    /**
+     * LearningShopGatewayConfig constructor.
+     * @param Router $router
+     *
+     * This would also get the list of active payment methods from the DB and create factories only for them
+     */
     public function __construct(Router $router)
     {
-        $this->router = $router;
-        $this->paymentMethodsConfigs = [
+        $factories = [//TODO: before version 7.1 (excluding 7.1), $this has to be passed in explicitly
             EpsConfig::class => function () { return new LearningEpsConfig($this); },
             GiropayConfig::class => function () { return new LearningGiropayConfig($this); },
             IdealConfig::class => function () { return new LearningIdealConfig($this); },
         ];
+        $this->paymentMethodRegistry = new PaymentMethodRegistry($this, $factories);
+        $this->router = $router;
     }
 
     public function newGateway(): PaymentGateway
@@ -60,15 +65,17 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
      */
     public function getPaymentConfigs()
     {
-        if (!$this->paymentConfigs) {
+        return $this->paymentMethodRegistry->getPaymentConfigs();
+        /*if (!$this->paymentConfigs) {
+            $executor = $this->paymentMethodRegistry->newExecutorForConfigs();
             foreach ($this->paymentMethodsConfigs as $paymentConfigType => $factory) {
                 if (!isset($this->paymentConfigs[$paymentConfigType])) {
-                    $name = new PaymentMethodFQCN($paymentConfigType);
-                    $this->paymentConfigs[$name->asString()] = $factory();
+                    $name = new PaymentMethodFQCN($paymentConfigType, $this->paymentMethodRegistry);
+                    $this->paymentConfigs[$name->asString()] = $executor->execute($this->paymentMethodsConfigs, $paymentConfigType);
                 }
             }
         }
-        return $this->paymentConfigs;
+        return $this->paymentConfigs;*/
     }
 
     public function getPaymentMethodConfig(PaymentMethodFQCN $interfaceName): PaymentMethodConfig
@@ -88,5 +95,10 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
         $legacyMethodConfig = new \Wirecard\PaymentSdk\Config\PaymentMethodConfig($paymentMethodConfig->getAbbreviation(), $maid, $secret);
         $config->add($legacyMethodConfig);
         return $config;
+    }
+
+    public function getPaymentMethodsRegistry(): PaymentMethodRegistry
+    {
+        return $this->paymentMethodRegistry;
     }
 }

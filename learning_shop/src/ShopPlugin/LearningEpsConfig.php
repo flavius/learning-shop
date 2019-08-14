@@ -19,6 +19,8 @@ use App\PaymentSDK\ValueObject\Maid;
 class LearningEpsConfig implements EpsConfig
 {
 
+    use PaymentMethod\EpsConfigImpl;
+
     /**
      * @var LearningShopGatewayConfig
      */
@@ -60,11 +62,6 @@ class LearningEpsConfig implements EpsConfig
         return $this->config->getFailureUrl();
     }
 
-    public function getAbbreviation(): string
-    {
-        return \Wirecard\PaymentSdk\Transaction\EpsTransaction::NAME;
-    }
-
     public function getMaid(): Maid
     {
         return new Maid('1f629760-1a66-4f83-a6b4-6a35620b4a6d');
@@ -80,9 +77,5 @@ class LearningEpsConfig implements EpsConfig
         return new BankAccount('NL13TEST0123456789', 'BWFBATW1XXX');
     }
 
-    public function getPaymentMethod(): PaymentMethod
-    {
-        $method = new PaymentMethod\EpsTransaction($this);
-        return $method;
-    }
+
 }

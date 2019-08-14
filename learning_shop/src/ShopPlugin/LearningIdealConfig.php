@@ -11,6 +11,8 @@ use App\PaymentSDK\ValueObject\Maid;
 
 class LearningIdealConfig implements IdealConfig
 {
+
+    use PaymentMethod\IdealConfigImpl;
     /**
      * @var LearningShopGatewayConfig
      */
@@ -56,11 +58,6 @@ class LearningIdealConfig implements IdealConfig
         return $this->config->getFailureUrl();
     }
 
-    public function getAbbreviation(): string
-    {
-        return \Wirecard\PaymentSdk\Transaction\IdealTransaction::NAME;
-    }
-
     public function getMaid(): Maid
     {
         return new Maid('4aeccf39-0d47-47f6-a399-c05c1f2fc819');
@@ -69,12 +66,6 @@ class LearningIdealConfig implements IdealConfig
     public function getGatewaySecret(): GatewaySecret
     {
         return new GatewaySecret('7a353766-23b5-4992-ae96-cb4232998954');
-    }
-
-    public function getPaymentMethod(): PaymentMethod
-    {
-        $method = new PaymentMethod\IdealTransaction($this);
-        return $method;
     }
 
     public function getBic(): string

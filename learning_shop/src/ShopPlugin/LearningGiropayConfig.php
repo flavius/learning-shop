@@ -12,6 +12,8 @@ use App\PaymentSDK\ValueObject\Maid;
 
 class LearningGiropayConfig implements GiropayConfig
 {
+
+    use PaymentMethod\GiropayConfigImpl;
     /**
      * @var LearningShopGatewayConfig
      */
@@ -57,11 +59,6 @@ class LearningGiropayConfig implements GiropayConfig
         return $this->config->getFailureUrl();
     }
 
-    public function getAbbreviation(): string
-    {
-        return \Wirecard\PaymentSdk\Transaction\GiropayTransaction::NAME;
-    }
-
     public function getMaid(): Maid
     {
         return new Maid('9b4b0e5f-1bc8-422e-be42-d0bad2eadabc');
@@ -77,9 +74,4 @@ class LearningGiropayConfig implements GiropayConfig
         return new BankAccount('', 'GENODETT488');
     }
 
-    public function getPaymentMethod(): PaymentMethod
-    {
-        $method = new PaymentMethod\GiropayTransaction($this);
-        return $method;
-    }
 }

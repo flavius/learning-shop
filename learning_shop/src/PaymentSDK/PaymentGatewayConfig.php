@@ -25,4 +25,6 @@ interface PaymentGatewayConfig extends HasPluginUrlEndpoints
 
     public function getLegacyConfig(PaymentMethodConfig $paymentMethodConfig): \Wirecard\PaymentSdk\Config\Config;
 
+    public function getPaymentMethodsRegistry(): PaymentMethodRegistry;
+
 }

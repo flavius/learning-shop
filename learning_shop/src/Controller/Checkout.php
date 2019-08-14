@@ -6,9 +6,7 @@ namespace App\Controller;
 
 use App\Infrastructure\AbstractController;
 
-use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\PaymentMethodRegistry;
-use App\PaymentSDK\RequestEnvironment;
 use App\PaymentSDK\Valuable\NamedValuable;
 use App\PaymentSDK\Valuable\UnnamedValuable;
 use App\PaymentSDK\ValueObject\Amount;
@@ -27,7 +25,8 @@ class Checkout extends AbstractController
      */
     public function index()
     {
-        $registry = new PaymentMethodRegistry();
+        $config = new LearningShopGatewayConfig($this->get('router'));
+        $registry = $config->getPaymentMethodsRegistry();
         $payment_methods = [];
         foreach($registry->getAllFQCNs() as $name => $fqcn) {
             $payment_methods[$name] = $name;//TODO: here UI thing (like transaction, if needed by the shop)
@@ -52,7 +51,7 @@ class Checkout extends AbstractController
             $valuable = new UnnamedValuable($amount);
         }
 
-        $response = $gateway->pay($valuable, new PaymentMethodFQCN($payment_method));
+        $response = $gateway->pay($valuable, new PaymentMethodFQCN($payment_method, $config->getPaymentMethodsRegistry()));
 
         if ($response instanceof InteractionResponse) {
             //echo($response->getRedirectUrl());

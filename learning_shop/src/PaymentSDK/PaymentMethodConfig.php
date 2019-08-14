@@ -24,4 +24,6 @@ interface PaymentMethodConfig
 
     public function getGatewaySecret(): GatewaySecret;
 
+    public function getPaymentMethodFQCN();
+
 }

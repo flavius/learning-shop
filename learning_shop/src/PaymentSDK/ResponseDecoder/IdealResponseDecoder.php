@@ -6,7 +6,6 @@ namespace App\PaymentSDK\ResponseDecoder;
 
 use App\PaymentSDK\PaymentGatewayConfig;
 use App\PaymentSDK\PaymentMethod\IdealTransaction;
-use App\PaymentSDK\PaymentMethodConfig;
 use App\PaymentSDK\RequestEnvironment;
 use App\PaymentSDK\ResponseDecoder;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
@@ -33,7 +32,7 @@ class IdealResponseDecoder implements ResponseDecoder
 
     public function getLegacyResponse(): LegacyResponse
     {
-        $config = $this->gatewayConfig->getPaymentMethodConfig(new PaymentMethodFQCN(IdealTransaction::class));
+        $config = $this->gatewayConfig->getPaymentMethodConfig(new PaymentMethodFQCN(IdealTransaction::class, $this->gatewayConfig->getPaymentMethodsRegistry()));
         $service = new TransactionService($this->gatewayConfig->getLegacyConfig($config));
         $response = $service->handleResponse($this->environment->getAll());
         return $response;
