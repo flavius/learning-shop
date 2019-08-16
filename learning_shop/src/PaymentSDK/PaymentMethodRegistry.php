@@ -7,6 +7,7 @@ namespace App\PaymentSDK;
 use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\PaymentMethod\GiropayTransaction;
 use App\PaymentSDK\PaymentMethod\IdealTransaction;
+use App\PaymentSDK\PaymentMethod\SofortTransaction;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
 
 class PaymentMethodRegistry
@@ -21,6 +22,7 @@ class PaymentMethodRegistry
         EpsTransaction::class,
         GiropayTransaction::class,
         IdealTransaction::class,
+        SofortTransaction::class,
     ];
 
     /**
@@ -60,6 +62,15 @@ class PaymentMethodRegistry
             $paymentMethodClass = $config->getPaymentMethodFQCN();
             $this->reverseAbbreviations[$abbrev] = $paymentMethodClass;
             $this->configs[$paymentMethodClass] = $config;
+        }
+        if (count($paymentConfigFactories) != count($this->validNames)) {
+            $desiredPaymentMethods = $this->validNames;
+            $providedPaymentMethods = array_values($this->reverseAbbreviations);
+            $missingMethods = array_diff($desiredPaymentMethods, $providedPaymentMethods);
+            if ($missingMethods) {
+                throw new \RuntimeException("Config factories not provided for the payment methods: " . implode(', ', $missingMethods));
+            }
+            throw new \RuntimeException("Config factories not provided for all payment methods");
         }
         //echo '<pre>';var_dump($this->configFactories);var_dump($this->configs);var_dump($this->reverseAbbreviations);exit;
     }
@@ -132,6 +143,11 @@ class PaymentMethodRegistry
         return new ExhaustiveExecutor($this->validNames);
     }
 
+    public function newExecutorForPaymentAbbreviations(): ExhaustiveExecutor
+    {
+        return new ExhaustiveExecutor(array_keys($this->reverseAbbreviations));
+    }
+
     /**
      * @return PaymentMethodConfig[]
      */
@@ -157,5 +173,12 @@ class PaymentMethodRegistry
     public function getAbbreviation(string $name)
     {
         return array_flip($this->reverseAbbreviations)[$name];
+    }
+
+    public function getPaymentMethod(PaymentMethodFQCN $method_name): PaymentMethod
+    {
+        $name = $method_name->asString();
+        assert(isset($this->configs[$name]));
+        return $this->configs[$name]->getPaymentMethod();
     }
 }

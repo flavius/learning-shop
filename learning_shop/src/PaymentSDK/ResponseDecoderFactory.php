@@ -33,14 +33,16 @@ class ResponseDecoderFactory
             try {
                 $registry = $this->gatewayConfig->getPaymentMethodsRegistry();
                 $method = new PaymentMethodFQCN($this->environment->getQueryParameter('name'), $registry);
-                $getXmlResponse = function() {};
-                switch ($method->getShortName()) {//TODO: use the payment method registry
-                    case 'eps':
-                    case 'giropay':
-                        return $this->getXmlResponse($method);
-                    case 'ideal':
-                        return $this->getIdealResponse();
-                }
+                $getXmlResponse = function() use($method) { return $this->getXmlResponse($method); };
+                $getIdealResponse = function() { return $this->getIdealResponse(); };
+                $actions = [
+                    'eps' => $getXmlResponse,
+                    'giropay' => $getXmlResponse,
+                    'sofortbanking' => $getXmlResponse,
+                    'ideal' => $getIdealResponse,
+                ];
+                $executor = $registry->newExecutorForPaymentAbbreviations();
+                return $executor->execute($actions, $method->getShortName());
             } catch (\Exception $e) {
                 error_log(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage());
                 return new EmptyDecoder();

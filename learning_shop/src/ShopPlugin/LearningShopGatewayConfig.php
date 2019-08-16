@@ -7,6 +7,7 @@ use App\PaymentSDK\PaymentGatewayConfig;
 use App\PaymentSDK\PaymentMethod\EpsConfig;
 use App\PaymentSDK\PaymentMethod\GiropayConfig;
 use App\PaymentSDK\PaymentMethod\IdealConfig;
+use App\PaymentSDK\PaymentMethod\SofortConfig;
 use App\PaymentSDK\PaymentMethodConfig;
 use App\PaymentSDK\PaymentMethodRegistry;
 use App\PaymentSDK\ValueObject\PaymentMethodFQCN;
@@ -35,6 +36,7 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
             EpsConfig::class => function () { return new LearningEpsConfig($this); },
             GiropayConfig::class => function () { return new LearningGiropayConfig($this); },
             IdealConfig::class => function () { return new LearningIdealConfig($this); },
+            SofortConfig::class => function () { return new LearningSofortConfig($this); },
         ];
         $this->paymentMethodRegistry = new PaymentMethodRegistry($this, $factories);
         $this->router = $router;

@@ -7,21 +7,21 @@ namespace App\PaymentSDK\PaymentMethod;
 use App\PaymentSDK\Payment;
 use App\PaymentSDK\PaymentMethod;
 
-trait IdealConfigImpl
+trait SofortConfigImpl
 {
     public function getPaymentMethod(): PaymentMethod
     {
-        $method = new PaymentMethod\IdealTransaction($this);
+        $method = new SofortTransaction($this);
         return $method;
     }
 
     public function getPaymentMethodFQCN()
     {
-        return IdealTransaction::class;
+        return SofortTransaction::class;
     }
 
     public function getAbbreviation(): string
     {
-        return \Wirecard\PaymentSdk\Transaction\IdealTransaction::NAME;
+        return \Wirecard\PaymentSdk\Transaction\SofortTransaction::NAME;
     }
 }

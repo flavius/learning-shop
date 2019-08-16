@@ -4,7 +4,9 @@
 namespace App\PaymentSDK\PaymentMethod;
 
 
+use App\PaymentSDK\Payment;
 use App\PaymentSDK\PaymentMethod;
+use App\PaymentSDK\PaymentMethodConfig;
 use Wirecard\PaymentSdk\Entity\Redirect;
 
 class EpsTransaction implements PaymentMethod
@@ -20,7 +22,7 @@ class EpsTransaction implements PaymentMethod
         $this->config = $config;
     }
 
-    public function newLegacyTransaction(): \Wirecard\PaymentSdk\Transaction\Transaction
+    public function newLegacyTransaction(Payment $payment): \Wirecard\PaymentSdk\Transaction\Transaction
     {
         $transaction = new \Wirecard\PaymentSdk\Transaction\EpsTransaction();
         $redirect = new Redirect(
@@ -51,5 +53,10 @@ class EpsTransaction implements PaymentMethod
     public function getFailureUrl()
     {
         return $this->config->getFailureUrl();
+    }
+
+    public function getConfig(): PaymentMethodConfig
+    {
+        return $this->config;
     }
 }

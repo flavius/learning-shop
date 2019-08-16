@@ -4,6 +4,7 @@
 namespace App\PaymentSDK\PaymentMethod;
 
 
+use App\PaymentSDK\Payment;
 use App\PaymentSDK\PaymentMethod;
 
 trait GiropayConfigImpl

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Infrastructure\AbstractController;
 
+use App\PaymentSDK\Payment\NamedPayment;
 use App\PaymentSDK\PaymentMethodRegistry;
 use App\PaymentSDK\Valuable\NamedValuable;
 use App\PaymentSDK\Valuable\UnnamedValuable;
