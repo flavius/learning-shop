@@ -4,6 +4,7 @@ namespace App\ShopPlugin;
 use App\PaymentSDK\PaymentGateway;
 use App\PaymentSDK\PaymentGatewayConfig;
 
+use App\PaymentSDK\PaymentMethod\BancontactConfig;
 use App\PaymentSDK\PaymentMethod\EpsConfig;
 use App\PaymentSDK\PaymentMethod\GiropayConfig;
 use App\PaymentSDK\PaymentMethod\IdealConfig;
@@ -37,6 +38,7 @@ class LearningShopGatewayConfig implements PaymentGatewayConfig
             GiropayConfig::class => function () { return new LearningGiropayConfig($this); },
             IdealConfig::class => function () { return new LearningIdealConfig($this); },
             SofortConfig::class => function () { return new LearningSofortConfig($this); },
+            BancontactConfig::class => function () { return new LearningBancontactConfig($this); },
         ];
         $this->paymentMethodRegistry = new PaymentMethodRegistry($this, $factories);
         $this->router = $router;

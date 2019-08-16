@@ -39,6 +39,7 @@ class ResponseDecoderFactory
                     'eps' => $getXmlResponse,
                     'giropay' => $getXmlResponse,
                     'sofortbanking' => $getXmlResponse,
+                    'bancontact' => $getXmlResponse,
                     'ideal' => $getIdealResponse,
                 ];
                 $executor = $registry->newExecutorForPaymentAbbreviations();

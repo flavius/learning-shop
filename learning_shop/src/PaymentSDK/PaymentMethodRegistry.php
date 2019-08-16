@@ -4,6 +4,7 @@
 namespace App\PaymentSDK;
 
 
+use App\PaymentSDK\PaymentMethod\BancontactTransaction;
 use App\PaymentSDK\PaymentMethod\EpsTransaction;
 use App\PaymentSDK\PaymentMethod\GiropayTransaction;
 use App\PaymentSDK\PaymentMethod\IdealTransaction;
@@ -23,6 +24,7 @@ class PaymentMethodRegistry
         GiropayTransaction::class,
         IdealTransaction::class,
         SofortTransaction::class,
+        BancontactTransaction::class,
     ];
 
     /**
@@ -68,7 +70,7 @@ class PaymentMethodRegistry
             $providedPaymentMethods = array_values($this->reverseAbbreviations);
             $missingMethods = array_diff($desiredPaymentMethods, $providedPaymentMethods);
             if ($missingMethods) {
-                throw new \RuntimeException("Config factories not provided for the payment methods: " . implode(', ', $missingMethods));
+                throw new \RuntimeException("Config factories not provided for the payment methods: " . implode(', ', $missingMethods . '. You may want to extend your implementation of the PaymentGatewayConfig interface'));
             }
             throw new \RuntimeException("Config factories not provided for all payment methods");
         }

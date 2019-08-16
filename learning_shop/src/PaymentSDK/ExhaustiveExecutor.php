@@ -19,7 +19,7 @@ class ExhaustiveExecutor
         $desiredKeys = $this->exhaustiveValidKeys;
         $providedKeys = array_keys($strategies);
         if (!in_array($selector, $providedKeys)) {
-            throw new \RuntimeException("Selector must be one of the provided values: " . implode(', ', $providedKeys));
+            throw new \RuntimeException("Selector must be one of the provided values: " . implode(', ', $providedKeys) . '. Provided: ' . $selector);
         }
         $this->checkIntersection($desiredKeys, $providedKeys);
         return $strategies[$selector]();
